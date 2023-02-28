@@ -12,7 +12,8 @@ function App() {
   const [selectedBtn, setSelectedBtn] = React.useState('');
   const [name, setName] = React.useState("Gaurav Kumar")
   const [email, setEmail] = React.useState("gaurav@yopmail.com")
-  const [number, setNumber] = React.useState('7317659991')
+  const [number, setNumber] = React.useState('7317659991');
+  const [inputSubscriptionId, setInputSubscriptionId] = React.useState("")
 
   const onClick3 = () => {
     if (selectedBtn6 === false && selectedBtn9 === false && selectedBtn12 === false) {
@@ -50,49 +51,72 @@ function App() {
       setSelectedBtn12(false)
     }
   }
+
+  const onPause = () => {
+    axios.post('http://localhost:4000/pause-resume', {
+      status: "pause",
+      subscriptionId: inputSubscriptionId
+    }).then(response => {
+      alert("Subscription Paused")
+      console.log(JSON.stringify(response))
+    }).catch(err => console.log(err))
+  }
+
+  const onResume = () => {
+    axios.post('http://localhost:4000/pause-resume', {
+      status: "resume",
+      subscriptionId: inputSubscriptionId
+    }).then(response => {
+      alert("Subscription Resumed")
+      console.log(JSON.stringify(response))
+    }).catch(err => console.log(err))
+  }
   const onSubmit = () => {
 
     axios.post('http://localhost:4000/createPlan', {
       selectedBtn: selectedBtn,
     }).then((response) => {
       console.log(response.data)
-        var options = {
-          "key_id": "rzp_test_sjv7IgWV8brRZz",
-          "subscription_id": `${response.data.createdSubscription}`,
-          "name": "Appventurez Testing Razorpay",
-          "description": "Description for the test plan",
-          "handler": function (response) {
-            alert(response.razorpay_payment_id)
-            alert(response.razorpay_subscription_id)
-            alert(response.razorpay_signature)
-            console.log(response)
-          },
-          "prefill": {
-            "name": name,
-            "email": email,
-            "contact": number,
-            "card[number]": 5267318187975449,
-            "card[cvv]": 123,
-            "card[expiry]": "12/29"
-          }
-        };
-        var paymentObject = new Razorpay(options);
-        paymentObject.open()
-      })
+      var options = {
+        "key_id": "rzp_test_sjv7IgWV8brRZz",
+        "subscription_id": `${response.data.createdSubscription}`,
+        "name": "Appventurez Testing Razorpay",
+        "description": "Description for the test plan",
+        "handler": function (response) {
+          alert(response.razorpay_payment_id)
+          alert(response.razorpay_subscription_id)
+          alert(response.razorpay_signature)
+          console.log(response)
+        },
+        "prefill": {
+          "name": name,
+          "email": email,
+          "contact": number,
+          "card[number]": 5267318187975449,
+          "card[cvv]": 123,
+          "card[expiry]": "12/29"
+        }
+      };
+      var paymentObject = new Razorpay(options);
+      paymentObject.open()
+    })
       .catch(function (error) {
         console.log(error);
       });
 
   }
-  // const settingName = (event) => {
-  //   setName(event?.target?.value)
-  // }
-  // const settingEmail = (event) => {
-  //   setEmail(event?.target?.value)
-  // }
-  // const settingNumber = (event) => {
-  //   setNumber(event?.target?.value)
-  // }
+  const settingName = (event) => {
+    setName(event.target.value)
+  }
+  const settingEmail = (event) => {
+    setEmail(event.target.value)
+  }
+  const settingNumber = (event) => {
+    setNumber(event.target.value)
+  }
+  const onChangeSubscription = (event) => {
+    setInputSubscriptionId(event.target.value);
+  }
 
   return (
     <div className='mainContainer'>
@@ -100,15 +124,15 @@ function App() {
         <div className='inputFieldDiv'>
           <div className='nameAndInputWrapper'>
             <div>NAME: </div>
-            <input type="text" placeholder={name} className='inputNameField' />
+            <input type="text" placeholder={name} className='inputNameField' onChange={settingName} />
           </div>
           <div className='nameAndInputWrapper'>
             <div>EMAIL: </div>
-            <input type="text" placeholder={email} className='inputNameField' />
+            <input type="text" placeholder={email} className='inputNameField' onChange={(event) => settingEmail(event)} />
           </div>
           <div className='nameAndInputWrapper'>
             <div>MOBILE: </div>
-            <input type="text" placeholder={number} className='inputNameField' />
+            <input type="text" placeholder={number} className='inputNameField' onChange={(event) => settingNumber(event)} />
           </div>
         </div>
 
@@ -133,8 +157,14 @@ function App() {
       </div>
 
 
+
       <Button onClick={onSubmit} sx={{ width: "10%", height: "7vh", fontSize: "20px", marginTop: "30px" }} variant="contained">SUBMIT</Button>
 
+      <div className='btnContainer1'>
+        <input onChange={(event) => onChangeSubscription(event)} type={"text"} placeholder="Enter Subscription Id" style={{ width: "40%", fontSize: "25px", paddingLeft: "10px" }} />
+        <Button onClick={onPause} sx={{ width: "20%", height: "7vh", fontSize: "20px" }} variant={selectedBtn3 ? "outlined" : "contained"}>Pause</Button>
+        <Button onClick={onResume} sx={{ width: "20%", height: "7vh", fontSize: "20px" }} variant={selectedBtn12 ? "outlined" : "contained"}>Resume</Button>
+      </div>
     </div >
   )
 

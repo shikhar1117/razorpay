@@ -10,6 +10,13 @@
   display: flex;
   justify-content: space-between;
 }
+.btnContainer1{
+  margin-top: 30px;
+  width: 50%;
+  display: flex;
+  justify-content:space-evenly;
+  
+}
 .inputDetailsContainer{
   width: 50%;
   display: flex;

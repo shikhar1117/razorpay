@@ -68,6 +68,17 @@ app.post('/fetchSubscription', async (req, res) => {
   res.send(value)
 })
 
+app.post('/pause-resume', async (req, res) => {
+  if(req.body.status == "pause"){
+    const value = await instance.subscriptions.pause(req.body.subscriptionId)
+    res.send(value)
+
+  }else if(req.body.status == "resume"){
+    const value = await instance.subscriptions.pause(req.body.subscriptionId)
+    res.send(value)
+  }
+})
+
 
 
 app.listen(4000, () => console.log(`Server is running on port 4000`))
