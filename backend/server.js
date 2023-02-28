@@ -69,13 +69,18 @@ app.post('/fetchSubscription', async (req, res) => {
 })
 
 app.post('/pause-resume', async (req, res) => {
-  if(req.body.status == "pause"){
-    const value = await instance.subscriptions.pause(req.body.subscriptionId)
-    res.send(value)
+  try{
 
-  }else if(req.body.status == "resume"){
-    const value = await instance.subscriptions.pause(req.body.subscriptionId)
-    res.send(value)
+    if(req.body.status == "pause"){
+      const value = await instance.subscriptions.pause(req.body.subscriptionId)
+      res.send(value)
+      
+    }else if(req.body.status == "resume"){
+      const value = await instance.subscriptions.resume(req.body.subscriptionId)
+      res.send(value)
+    }
+  }catch(err){
+    console.log(err)
   }
 })
 
