@@ -76,7 +76,6 @@ function App() {
     axios.post('http://localhost:4000/createPlan', {
       selectedBtn: selectedBtn,
     }).then((response) => {
-      console.log(response.data)
       var options = {
         "key_id": "rzp_test_sjv7IgWV8brRZz",
         "subscription_id": `${response.data.createdSubscription}`,

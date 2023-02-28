@@ -17,10 +17,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.post('/verify', async (req, res) => {
+try{
 
   const data = validateWebhookSignature(JSON.stringify(req.body), req.headers["x-razorpay-signature"], "secret")
   console.log(data)
   console.log(JSON.stringify(req.body))
+}catch(err){
+  console.log(err)
+}
 })
 
 app.post('/createPlan', async (req, res) => {
@@ -64,9 +68,14 @@ app.post('/createPlan', async (req, res) => {
 })
 
 app.post('/fetchSubscription', async (req, res) => {
-  const value = await instance.subscriptions.fetch(req.body.subscriptionId)
-  res.send(value)
-})
+  try{
+
+    const value = await instance.subscriptions.fetch(req.body.subscriptionId)
+    res.send(value)
+  }catch (err){
+    console.log(err)
+  }
+}) 
 
 app.post('/pause-resume', async (req, res) => {
   try{
