@@ -10,8 +10,8 @@ function App() {
   const [selectedBtn9, setSelectedBtn9] = React.useState(false);
   const [selectedBtn12, setSelectedBtn12] = React.useState(false);
   const [selectedBtn, setSelectedBtn] = React.useState('');
-  const [name, setName] = React.useState("Shikhar")
-  const [email, setEmail] = React.useState("shikhar@yopmail.com")
+  const [name, setName] = React.useState("Gaurav Kumar")
+  const [email, setEmail] = React.useState("gaurav@yopmail.com")
   const [number, setNumber] = React.useState('7317659991')
 
   const onClick3 = () => {
@@ -70,7 +70,10 @@ function App() {
           "prefill": {
             "name": name,
             "email": email,
-            "contact": number
+            "contact": number,
+            "card[number]": 5267318187975449,
+            "card[cvv]": 123,
+            "card[expiry]": "12/29"
           }
         };
         var paymentObject = new Razorpay(options);
@@ -97,15 +100,15 @@ function App() {
         <div className='inputFieldDiv'>
           <div className='nameAndInputWrapper'>
             <div>NAME: </div>
-            <input type="text" placeholder='Enter Full Name' className='inputNameField' />
+            <input type="text" placeholder={name} className='inputNameField' />
           </div>
           <div className='nameAndInputWrapper'>
             <div>EMAIL: </div>
-            <input type="text" placeholder='Enter Email' className='inputNameField' />
+            <input type="text" placeholder={email} className='inputNameField' />
           </div>
           <div className='nameAndInputWrapper'>
             <div>MOBILE: </div>
-            <input type="text" placeholder='Enter Phone Number' className='inputNameField' />
+            <input type="text" placeholder={number} className='inputNameField' />
           </div>
         </div>
 
